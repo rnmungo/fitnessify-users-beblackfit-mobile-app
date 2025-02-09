@@ -2,7 +2,7 @@
   "expo": {
     "name": "fitnessify-users-beblackfit-mobile-app",
     "slug": "fitnessify-users-beblackfit-mobile-app",
-    "version": "1.0.0",
+    "version": "1.0.0-alpha",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
@@ -14,7 +14,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#1F1F1F"
       }
     },
     "web": {
@@ -24,13 +24,22 @@
     },
     "plugins": [
       "expo-router",
+      "expo-secure-store",
       [
         "expo-splash-screen",
         {
           "image": "./assets/images/splash-icon.png",
           "imageWidth": 200,
           "resizeMode": "contain",
-          "backgroundColor": "#ffffff"
+          "backgroundColor": "#1F1F1F"
+        }
+      ],
+      [
+        "@sentry/react-native/expo",
+        {
+          "url": "https://sentry.io/",
+          "project": "react-native",
+          "organization": "rodrigo-mungo"
         }
       ]
     ],
