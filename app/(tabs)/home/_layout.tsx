@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react';
 import { Stack } from 'expo-router';
 import { View } from 'react-native';
 import { Avatar, IconButton, Text, useTheme } from 'react-native-paper';
-import { useAuthStore } from '@/core/auth/store';
+import { useAuthStore } from '@/core/account/store';
 import CustomerServiceDialog from '@/core/shared/components/customer-service-dialog';
 
 const HomeLayout = () => {

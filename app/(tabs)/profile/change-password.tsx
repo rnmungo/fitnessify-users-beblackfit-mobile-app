@@ -5,8 +5,8 @@ import {
 } from 'react-native-paper';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import useMutationChangePassword from '@/core/auth/hooks/useMutationChangePassword';
-import { getPasswordStrength } from '@/core/auth/utilities/password-strength';
+import useMutationChangePassword from '@/core/account/hooks/useMutationChangePassword';
+import { getPasswordStrength } from '@/core/account/utilities/password-strength';
 import { useSnackbar } from '@/core/shared/context/snackbar';
 import PasswordTextInput, { type PasswordInputVariant } from '@/core/shared/components/password-text-input';
 

@@ -9,7 +9,7 @@ import {
   Text,
   useTheme,
 } from 'react-native-paper';
-import { useAuthStore } from '@/core/auth/store';
+import { useAuthStore } from '@/core/account/store';
 import {
   EQUIPMENT_TRANSLATION,
   GENDER_TRANSLATION,

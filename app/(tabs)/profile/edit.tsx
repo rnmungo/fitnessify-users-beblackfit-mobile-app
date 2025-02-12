@@ -12,9 +12,9 @@ import { Dropdown } from 'react-native-paper-dropdown';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useSnackbar } from '@/core/shared/context/snackbar';
-import { useAuthStore } from '@/core/auth/store';
-import { useMutationUpdateProfile } from '@/core/auth/hooks';
-import type { ProfileUpdated } from '@/core/auth/interfaces/session';
+import { useAuthStore } from '@/core/account/store';
+import { useMutationUpdateProfile } from '@/core/account/hooks';
+import type { ProfileUpdated } from '@/core/account/interfaces/session';
 
 const goalsOptions = [
   { label: 'Perder peso', value: 'LoseWeight' },

@@ -19,7 +19,7 @@ import {
 } from 'react-native-paper';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { useAuthStore } from '@/core/auth/store';
+import { useAuthStore } from '@/core/account/store';
 import { useSnackbar } from '@/core/shared/context/snackbar';
 
 const validationSchema = Yup.object().shape({

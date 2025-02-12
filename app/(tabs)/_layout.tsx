@@ -6,8 +6,8 @@ import {
   Icon,
   useTheme,
 } from 'react-native-paper';
-import { AUTH_STATUS } from '@/core/auth/constants';
-import { useAuthStore } from '@/core/auth/store';
+import { AUTH_STATUS } from '@/core/account/constants';
+import { useAuthStore } from '@/core/account/store';
 
 const GuardLayout = () => {
   const { session, checkStatus } = useAuthStore();
