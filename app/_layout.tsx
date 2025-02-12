@@ -12,10 +12,10 @@ import {
   PaperProvider,
 } from 'react-native-paper';
 import 'react-native-reanimated';
-import { Colors } from '@/constants/Colors';
 import * as Sentry from '@sentry/react-native';
-
-import type {  } from 'react-native-paper/lib/typescript/types';
+import QueryProvider from '@/core/shared/context/query';
+import SnackbarProvider from '@/core/shared/context/snackbar';
+import { Colors } from '@/constants/Colors';
 
 Sentry.init({
   dsn: 'https://682e1d7c043ab5820178962edbdd256e@o4508784507027456.ingest.us.sentry.io/4508784508534784',
@@ -67,12 +67,16 @@ const RootLayout = () => {
 
   return (
     <GestureHandlerRootView>
-      <PaperProvider theme={PaperDarkTheme}>
-        <ThemeProvider value={NavigationDarkTheme}>
-          <Slot />
-          <StatusBar style="auto" />
-        </ThemeProvider>
-      </PaperProvider>
+      <QueryProvider>
+        <PaperProvider theme={PaperDarkTheme}>
+          <SnackbarProvider>
+            <ThemeProvider value={NavigationDarkTheme}>
+              <Slot />
+              <StatusBar style="auto" />
+            </ThemeProvider>
+          </SnackbarProvider>
+        </PaperProvider>
+      </QueryProvider>
     </GestureHandlerRootView>
   );
 };
