@@ -82,5 +82,9 @@ export const Colors = {
     surfaceDisabled: 'rgba(232, 225, 217, 0.12)',
     onSurfaceDisabled: 'rgba(232, 225, 217, 0.38)',
     backdrop: 'rgba(53, 48, 36, 0.4)',
+    warning: '#ffb74d',
+    onWarning: '#f57c00',
+    success: 'rgb(136, 217, 144)',
+    onSuccess: 'rgb(0, 57, 19)',
   },
 };
