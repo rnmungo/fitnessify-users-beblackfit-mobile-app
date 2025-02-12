@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import isEmpty from 'lodash.isempty';
-import { Session } from '../interfaces/session';
+import { ProfileUpdated, Session } from '../interfaces/session';
 import { getMyProfile, signIn } from '../actions/auth-actions';
 import { AUTH_STATUS } from '../constants';
 import { SecureStorage } from '@/core/shared/utilities/secure-storage';
@@ -14,6 +14,7 @@ export interface AuthState {
   checkStatus: () => Promise<void>;
   signIn: (email: string, password: string) => Promise<boolean>;
   signOut: () => Promise<void>;
+  reloadProfile: (profile: ProfileUpdated) => void;
 };
 
 export const useAuthStore = create<AuthState>()(
@@ -85,6 +86,23 @@ export const useAuthStore = create<AuthState>()(
       signOut: async () => {
         await SecureStorage.deleteItem(StorageKeys.TOKEN_KEY);
         set({ session: undefined });
+      },
+
+      reloadProfile: async (profile: ProfileUpdated) => {
+        const sessionState = get().session;
+
+        set({
+          session: {
+            applicationId: sessionState?.applicationId || '',
+            status: sessionState?.status || AUTH_STATUS.CHECKING,
+            authorization: sessionState?.authorization,
+            user: sessionState?.user,
+            profile: {
+              ...profile,
+              tenant: sessionState?.profile?.tenant || { name: '', email: '' },
+            },
+          },
+        });
       },
     }),
     {

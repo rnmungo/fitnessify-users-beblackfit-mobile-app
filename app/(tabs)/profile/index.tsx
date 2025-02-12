@@ -1,7 +1,6 @@
 import { useCallback, useState } from 'react';
 import { useRouter } from 'expo-router';
-import Constants from 'expo-constants';
-import { Alert, View } from 'react-native';
+import { View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import {
   Button,
@@ -59,10 +58,16 @@ const ProfileScreen = () => {
       ? GENDER_TRANSLATION[session?.profile?.gender]
       : 'Sin selección';
 
-  const appVersion = Constants.expoConfig?.version || Constants.nativeAppVersion || '1.0.0';
-
   return (
-    <View style={{ paddingHorizontal: 16, flex: 1, flexDirection: 'column',  }}>
+    <View
+      style={{
+        paddingHorizontal: 16,
+        paddingVertical: 10,
+        flex: 1,
+        flexDirection: 'column',
+        backgroundColor: theme.colors.background,
+      }}
+    >
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <List.Section title="Detalles de la cuenta" style={{ backgroundColor: theme.colors.surfaceVariant }}>
           <List.Item
@@ -75,7 +80,7 @@ const ProfileScreen = () => {
             title="Cambiar contraseña"
             right={props => <List.Icon {...props} icon="chevron-right" />}
             style={{ backgroundColor: theme.colors.background }}
-            onPress={() => router.push('/(tabs)/profile/(stack)/change-password')}
+            onPress={() => router.push('/profile/change-password')}
           />
         </List.Section>
         <List.Section title="Datos del perfil" style={{ backgroundColor: theme.colors.surfaceVariant }}>
@@ -84,7 +89,7 @@ const ProfileScreen = () => {
             description={`Sexo: ${gender}`}
             right={props => <List.Icon {...props} icon="chevron-right" />}
             style={{ backgroundColor: theme.colors.background }}
-            onPress={() => router.push('/(tabs)/profile/(stack)/edit')}
+            onPress={() => router.push('/profile/edit')}
           />
           <Divider />
           <List.Item

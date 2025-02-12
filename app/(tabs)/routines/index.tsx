@@ -5,7 +5,7 @@ import {
 
 const RoutinesScreen = () => {
   return (
-    <View>
+    <View style={{ flex: 1, flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
       <Text>RoutinesScreen</Text>
     </View>
   );

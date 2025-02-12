@@ -1,14 +1,13 @@
 import { useCallback, useState } from 'react';
-import { Stack, useRouter } from 'expo-router';
+import { Stack } from 'expo-router';
 import { View } from 'react-native';
 import { Avatar, IconButton, Text, useTheme } from 'react-native-paper';
 import { useAuthStore } from '@/core/auth/store';
 import CustomerServiceDialog from '@/core/shared/components/customer-service-dialog';
 
-const ProfileLayout = () => {
+const RoutinesLayout = () => {
   const [openState, setOpenState] = useState<boolean>(false);
   const theme = useTheme();
-  const router = useRouter();
   const { session } = useAuthStore();
 
   const handleOpenCustomerService = useCallback(() => {
@@ -47,38 +46,8 @@ const ProfileLayout = () => {
                   label={avatarText}
                   style={{ marginRight: 16, backgroundColor: theme.colors.surfaceVariant }}
                 />
-                <Text variant="titleMedium">Mi cuenta</Text>
+                <Text variant="titleMedium">Rutinas</Text>
               </View>
-            ),
-            headerRight: () => (
-              <IconButton
-                icon="face-agent"
-                size={24}
-                onPress={handleOpenCustomerService}
-              />
-            ),
-          }}
-        />
-        <Stack.Screen
-          name="edit"
-          options={{
-            headerTitle: () => (
-              <Text variant="titleMedium">Editar cuenta</Text>
-            ),
-            headerRight: () => (
-              <IconButton
-                icon="face-agent"
-                size={24}
-                onPress={handleOpenCustomerService}
-              />
-            ),
-          }}
-        />
-        <Stack.Screen
-          name="change-password"
-          options={{
-            headerTitle: () => (
-              <Text variant="titleMedium">Cambiar contraseña</Text>
             ),
             headerRight: () => (
               <IconButton
@@ -95,4 +64,4 @@ const ProfileLayout = () => {
   );
 };
 
-export default ProfileLayout;
+export default RoutinesLayout;

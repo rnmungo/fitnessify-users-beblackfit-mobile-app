@@ -31,6 +31,8 @@ export interface Profile {
   };
 };
 
+export type ProfileUpdated = Omit<Profile, 'tenant'>;
+
 export interface BaseSession {
   applicationId: string;
   status: AuthStatus;

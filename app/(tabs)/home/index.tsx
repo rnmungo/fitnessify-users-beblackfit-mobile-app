@@ -5,7 +5,7 @@ import {
 
 const HomeScreen = () => {
   return (
-    <View>
+    <View style={{ flex: 1, flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
       <Text>HomeScreen</Text>
     </View>
   );

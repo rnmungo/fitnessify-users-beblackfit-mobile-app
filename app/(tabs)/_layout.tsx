@@ -1,23 +1,17 @@
 import { useEffect } from 'react';
-import { Redirect } from 'expo-router';
+import { Redirect, Tabs } from 'expo-router';
 import { View } from 'react-native';
 import {
   ActivityIndicator,
   Icon,
+  useTheme,
 } from 'react-native-paper';
-import { createMaterialBottomTabNavigator } from 'react-native-paper/react-navigation';
 import { AUTH_STATUS } from '@/core/auth/constants';
 import { useAuthStore } from '@/core/auth/store';
-import AppBar from '@/core/auth/components/appbar';
-
-import HomeScreen from './home';
-import RoutinesScreen from './routines';
-import ProfileScreen from './profile';
-
-const Tabs = createMaterialBottomTabNavigator();
 
 const GuardLayout = () => {
   const { session, checkStatus } = useAuthStore();
+  const theme = useTheme();
 
   useEffect(() => {
     checkStatus();
@@ -42,51 +36,110 @@ const GuardLayout = () => {
     return <Redirect href="/auth/sign-in" />;
   }
 
-  const avatarText =
-    session?.profile?.name
-      && session?.profile?.lastName
-      ? `${session?.profile?.name[0].toUpperCase()}${session?.profile?.lastName[0].toUpperCase()}`
-      : '';
-
   return (
-    <>
-      <AppBar
-        avatarText={avatarText}
-        title={`Hola ${session?.profile?.name}! 👋`}
+    <Tabs
+      initialRouteName="home"
+      screenOptions={{
+        headerShown: false,
+        tabBarActiveTintColor: theme.colors.onSurfaceVariant,
+        tabBarInactiveTintColor: theme.colors.onSurfaceVariant,
+        tabBarStyle: {
+          backgroundColor: theme.colors.surface,
+          paddingTop: 16,
+          paddingBottom: 16,
+          elevation: 0,
+          shadowOpacity: 0,
+          minHeight: 94,
+        },
+        tabBarLabelStyle: {
+          fontSize: 12,
+          fontWeight: 'bold',
+          marginTop: 8,
+        },
+      }}
+    >
+      <Tabs.Screen
+        name="home"
+        options={{
+          tabBarLabel: 'Inicio',
+          tabBarIcon: ({ color, focused }: { color: string, focused: boolean }) => {
+            return (
+              <View
+                style={
+                  focused
+                    ? {
+                        backgroundColor: theme.colors.inverseOnSurface,
+                        borderRadius: 20,
+                        width: 64,
+                        height: 32,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }
+                    : {}
+                }
+              >
+                <Icon source="home-outline" size={24} color={color} />
+              </View>
+            );
+          },
+        }}
       />
-      <Tabs.Navigator initialRouteName="Home">
-        <Tabs.Screen
-          name="Home"
-          component={HomeScreen}
-          options={{
-            tabBarLabel: 'Inicio',
-            tabBarIcon: ({ color }: { color: string }) => {
-              return <Icon source="home-outline" size={24} color={color} />;
-            },
-          }}
-        />
-        <Tabs.Screen
-          name="Routines"
-          component={RoutinesScreen}
-          options={{
-            tabBarLabel: 'Rutinas',
-            tabBarIcon: ({ color }: { color: string }) => {
-              return <Icon source="weight-lifter" size={24} color={color} />;
-            },
-          }}
-        />
-        <Tabs.Screen
-          name="Profile"
-          component={ProfileScreen}
-          options={{
-            tabBarLabel: 'Perfil',
-            tabBarIcon: ({ color }: { color: string }) => {
-              return <Icon source="account-outline" size={24} color={color} />;
-            },
-          }}
-        />
-      </Tabs.Navigator>
-    </>
+      <Tabs.Screen
+        name="routines"
+        options={{
+          tabBarLabel: 'Rutinas',
+          tabBarIcon: ({ color, focused }: { color: string, focused: boolean }) => {
+            return (
+              <View
+                style={
+                  focused
+                    ? {
+                        backgroundColor: theme.colors.inverseOnSurface,
+                        borderRadius: 20,
+                        width: 64,
+                        height: 32,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }
+                    : {}
+                }
+              >
+                <Icon source="weight-lifter" size={24} color={color} />
+              </View>
+            );
+          },
+        }}
+      />
+      <Tabs.Screen
+        name="profile"
+        options={{
+          tabBarLabel: 'Perfil',
+          tabBarIcon: ({ color, focused }: { color: string, focused: boolean }) => {
+            return (
+              <View
+                style={
+                  focused
+                    ? {
+                        backgroundColor: theme.colors.inverseOnSurface,
+                        borderRadius: 20,
+                        width: 64,
+                        height: 32,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }
+                    : {}
+                }
+              >
+                <Icon source="account-outline" size={24} color={color} />
+              </View>
+            );
+          },
+        }}
+      />
+    </Tabs>
   );
 };
 

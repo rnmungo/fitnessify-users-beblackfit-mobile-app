@@ -13,7 +13,6 @@ import {
   Button,
   HelperText,
   Portal,
-  Snackbar,
   Text,
   TextInput,
   useTheme,
@@ -21,6 +20,7 @@ import {
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useAuthStore } from '@/core/auth/store';
+import { useSnackbar } from '@/core/shared/context/snackbar';
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -31,9 +31,9 @@ const validationSchema = Yup.object().shape({
 
 const SignInScreen = () => {
   const [visibilityState, setVisibilityState] = useState<boolean>(false);
-  const [errorState, setErrorState] = useState<string | undefined>();
   const { signIn } = useAuthStore();
   const theme = useTheme();
+  const snackbar = useSnackbar();
   const { height } = useWindowDimensions();
   const router = useRouter();
 
@@ -52,7 +52,7 @@ const SignInScreen = () => {
         }
       } catch (error: unknown) {
         if (error instanceof Error) {
-          setErrorState(error.message);
+          snackbar.error(error.message);
         }
       }
     },
@@ -61,8 +61,6 @@ const SignInScreen = () => {
   const togglePasswordVisibility = useCallback(() => {
     setVisibilityState(prevState => !prevState);
   }, []);
-
-  const onDismissSnackBar = () => setErrorState(undefined);
 
   const navigateToRegister = useCallback(() => {
     router.push('/auth/register');
@@ -210,26 +208,6 @@ const SignInScreen = () => {
             />
           </View>
         )}
-      </Portal>
-      <Portal>
-        <Snackbar
-          visible={!!errorState}
-          onDismiss={onDismissSnackBar}
-          style={{ backgroundColor: theme.colors.error }}
-          action={{
-            label: 'Cerrar',
-            onPress: () => {
-              setErrorState(undefined);
-            },
-            textColor: theme.colors.onError,
-            buttonColor: theme.colors.error,
-            rippleColor: theme.colors.errorContainer,
-          }}
-        >
-          <Text style={{ color: theme.colors.onError }}>
-            {errorState}
-          </Text>
-        </Snackbar>
       </Portal>
     </KeyboardAvoidingView>
   );
