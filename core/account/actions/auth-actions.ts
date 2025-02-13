@@ -1,6 +1,5 @@
 import * as Sentry from '@sentry/react-native';
 import { gatewayClient, handleError } from '@/core/shared/services/rest-clients';
-import { AUTH_STATUS } from '../constants';
 import { adaptAuthorization, adaptProfile } from './adapters';
 
 import type { BaseSession } from '../interfaces/session';

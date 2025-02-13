@@ -1,7 +1,12 @@
 import { jwtDecode } from 'jwt-decode';
 import { AUTH_STATUS } from '../constants';
-import type { BaseSession, Profile } from '../interfaces/session';
-import type { AuthorizationData, DecodedToken, ProfileData } from './types';
+import type { BaseSession, Profile, Subscription } from '../interfaces/session';
+import type {
+  AuthorizationData,
+  DecodedToken,
+  ProfileData,
+  SubscriptionData,
+} from './types';
 
 export const adaptAuthorization = (data: AuthorizationData): BaseSession => {
   const decodedToken = jwtDecode<DecodedToken>(data.token);
@@ -47,4 +52,13 @@ export const adaptProfile = (data: ProfileData): Profile => ({
     name: data.tenant.name,
     email: data.tenant.email
   }
+});
+
+export const adaptSubscription = (responseData: SubscriptionData): Subscription => ({
+  id: responseData.id,
+  status: responseData.status,
+  dueDate: responseData.dueDate,
+  userTenantId: responseData.userTenantId,
+  planId: responseData.planId,
+  planName: responseData.plan.name,
 });

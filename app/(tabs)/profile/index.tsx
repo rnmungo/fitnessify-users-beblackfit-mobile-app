@@ -122,15 +122,17 @@ const ProfileScreen = () => {
             style={{ backgroundColor: theme.colors.background }}
           />
         </List.Section>
-        <List.Section title="Suscripción" style={{ backgroundColor: theme.colors.surfaceVariant }}>
-          <List.Item
-            title="Cambiar mi suscripción o dar de baja"
-            description="Plan básico"
-            right={props => <List.Icon {...props} icon="chevron-right" />}
-            style={{ backgroundColor: theme.colors.background }}
-            onPress={handleOpenCustomerService}
-          />
-        </List.Section>
+        {session?.subscription && (
+          <List.Section title="Suscripción" style={{ backgroundColor: theme.colors.surfaceVariant }}>
+            <List.Item
+              title="Cambiar mi suscripción o dar de baja"
+              description={session.subscription.planName}
+              right={props => <List.Icon {...props} icon="chevron-right" />}
+              style={{ backgroundColor: theme.colors.background }}
+              onPress={handleOpenCustomerService}
+            />
+          </List.Section>
+        )}
         <Divider />
         <View style={{ padding: 16 }}>
           <AppVersionText

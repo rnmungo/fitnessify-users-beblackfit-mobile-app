@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import isEmpty from 'lodash.isempty';
 import { ProfileUpdated, Session } from '../interfaces/session';
 import { getMyProfile, signIn } from '../actions/auth-actions';
+import { getSubscription } from '../actions/subscription-actions';
 import { AUTH_STATUS } from '../constants';
 import { SecureStorage } from '@/core/shared/utilities/secure-storage';
 import { StorageKeys } from '@/constants/StorageKeys';
@@ -26,6 +27,7 @@ export const useAuthStore = create<AuthState>()(
         authorization: undefined,
         user: undefined,
         profile: undefined,
+        subscription: undefined,
       },
 
       checkStatus: async () => {
@@ -56,13 +58,16 @@ export const useAuthStore = create<AuthState>()(
         try {
           const authData = await signIn({ email, password });
           let profile = undefined;
+          let subscription = undefined;
 
           if (authData && authData.authorization?.token) {
             await SecureStorage.setItem(StorageKeys.TOKEN_KEY, authData.authorization.token);
 
             profile = await getMyProfile();
 
-            set({ session: { ...authData, profile } });
+            subscription = await getSubscription();
+
+            set({ session: { ...authData, profile, subscription } });
 
             return true;
           }
@@ -76,6 +81,7 @@ export const useAuthStore = create<AuthState>()(
               authorization: undefined,
               user: undefined,
               profile: undefined,
+              subscription: undefined,
             }
           });
 
@@ -97,6 +103,7 @@ export const useAuthStore = create<AuthState>()(
             status: sessionState?.status || AUTH_STATUS.CHECKING,
             authorization: sessionState?.authorization,
             user: sessionState?.user,
+            subscription: sessionState?.subscription,
             profile: {
               ...profile,
               tenant: sessionState?.profile?.tenant || { name: '', email: '' },

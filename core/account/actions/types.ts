@@ -28,3 +28,14 @@ export interface ProfileData {
     email: string;
   };
 };
+
+export interface SubscriptionData {
+  id: string;
+  status: string;
+  dueDate: string;
+  userTenantId: string;
+  planId: string;
+  plan: {
+    name: string;
+  }
+}

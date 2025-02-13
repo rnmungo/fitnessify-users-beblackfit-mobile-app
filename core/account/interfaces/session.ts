@@ -33,6 +33,15 @@ export interface Profile {
 
 export type ProfileUpdated = Omit<Profile, 'tenant'>;
 
+export interface Subscription {
+  id: string;
+  status: string;
+  dueDate: string;
+  userTenantId: string;
+  planId: string;
+  planName: string;
+}
+
 export interface BaseSession {
   applicationId: string;
   status: AuthStatus;
@@ -42,6 +51,7 @@ export interface BaseSession {
 
 export interface ProfileSession {
   profile?: Profile;
+  subscription?: Subscription;
 };
 
 export type Session = BaseSession & ProfileSession;
