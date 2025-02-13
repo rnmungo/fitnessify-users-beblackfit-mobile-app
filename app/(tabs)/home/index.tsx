@@ -69,7 +69,15 @@ const HomeScreen = () => {
   return (
     <ScrollView contentContainerStyle={{ flex: 1, paddingHorizontal: 26, paddingVertical: 30, flexDirection: 'column', gap: 20 }}>
       {userRoutineQuery.status === ReactQueryStatus.Pending && (
-        <Surface style={{ padding: 16, borderRadius: 12, flexDirection: 'row', alignItems: 'center' }} elevation={2}>
+        <Surface
+          style={{
+            padding: 16,
+            borderRadius: 12,
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}
+          elevation={1}
+        >
           <Skeleton width={40} height={40} borderRadius={50} />
           <View style={{ flex: 1, marginLeft: 12 }}>
             <Skeleton width="80%" height={20} />
@@ -86,7 +94,7 @@ const HomeScreen = () => {
             alignItems: 'center',
             backgroundColor: theme.colors.onError,
           }}
-          elevation={2}
+          elevation={1}
         >
           <View style={{ flex: 1 }}>
             <Text
@@ -121,7 +129,7 @@ const HomeScreen = () => {
       {(userRoutineQuery.status === ReactQueryStatus.Success && lastRoutine) && (
         <Surface
           style={{ padding: 16, borderRadius: 12, flexDirection: 'row', alignItems: 'center' }}
-          elevation={2}
+          elevation={1}
         >
           <Avatar.Text
             size={40}
@@ -155,7 +163,7 @@ const HomeScreen = () => {
       {(userRoutineQuery.status === ReactQueryStatus.Success && !lastRoutine) && (
         <Surface
           style={{ padding: 16, borderRadius: 12, flexDirection: 'row', alignItems: 'center' }}
-          elevation={2}
+          elevation={1}
         >
           <View style={{ flex: 1 }}>
             <Text
@@ -179,7 +187,7 @@ const HomeScreen = () => {
           <IconButton icon="chevron-right" size={32} iconColor="white" onPress={() => router.push('/(tabs)/routines')} />
         </Surface>
       )}
-      <Card mode="elevated" elevation={2}>
+      <Card mode="elevated" elevation={1}>
         <Card.Title
           title="Artículo destacado"
           right={(props) => <Icon {...props} source="star" />}
@@ -211,7 +219,7 @@ const HomeScreen = () => {
       {subscriptionProps && (
         <Surface
           style={{ padding: 16, borderRadius: 12, flexDirection: 'row', alignItems: 'center' }}
-          elevation={2}
+          elevation={1}
         >
           <View style={{ flex: 1 }}>
             <Text variant="titleMedium" style={{ color: theme.colors.onSurface }}>
