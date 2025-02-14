@@ -41,10 +41,10 @@ const GuardLayout = () => {
       initialRouteName="home"
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: theme.colors.onSurfaceVariant,
-        tabBarInactiveTintColor: theme.colors.onSurfaceVariant,
+        tabBarActiveTintColor: theme.colors.onSecondaryContainer,
+        tabBarInactiveTintColor: theme.colors.onSecondaryContainer,
         tabBarStyle: {
-          backgroundColor: theme.colors.surface,
+          backgroundColor: theme.colors.elevation.level1,
           paddingTop: 16,
           paddingBottom: 16,
           elevation: 0,
@@ -68,7 +68,7 @@ const GuardLayout = () => {
                 style={
                   focused
                     ? {
-                        backgroundColor: theme.colors.inverseOnSurface,
+                        backgroundColor: theme.colors.secondaryContainer,
                         borderRadius: 20,
                         width: 64,
                         height: 32,
@@ -95,7 +95,7 @@ const GuardLayout = () => {
                 style={
                   focused
                     ? {
-                        backgroundColor: theme.colors.inverseOnSurface,
+                        backgroundColor: theme.colors.secondaryContainer,
                         borderRadius: 20,
                         width: 64,
                         height: 32,
@@ -122,7 +122,7 @@ const GuardLayout = () => {
                 style={
                   focused
                     ? {
-                        backgroundColor: theme.colors.inverseOnSurface,
+                        backgroundColor: theme.colors.secondaryContainer,
                         borderRadius: 20,
                         width: 64,
                         height: 32,
