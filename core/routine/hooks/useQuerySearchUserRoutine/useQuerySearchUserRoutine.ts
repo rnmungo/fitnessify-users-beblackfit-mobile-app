@@ -1,7 +1,7 @@
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
 import { searchUserRoutines } from '../../actions/routine-actions';
 import type { UserRoutine } from '../../interfaces/routine';
-import { Paged } from '@/core/shared/interfaces/search';
+import type { Paged } from '@/core/shared/interfaces/search';
 
 interface QuerySearchUserRoutineParams {
   userId: string;

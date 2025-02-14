@@ -9,3 +9,14 @@ export interface UserRoutineData {
     level: string;
   };
 }
+
+export interface RoutineData {
+  id: string;
+  createdAt: string;
+  name: string;
+  description: string;
+  duration: string;
+  level: string;
+  equipment: string;
+  status: string;
+}
