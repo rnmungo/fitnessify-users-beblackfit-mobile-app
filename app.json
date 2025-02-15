@@ -35,6 +35,13 @@
         }
       ],
       [
+        "expo-video",
+        {
+          "supportsBackgroundPlayback": true,
+          "supportsPictureInPicture": true
+        }
+      ],
+      [
         "@sentry/react-native/expo",
         {
           "url": "https://sentry.io/",

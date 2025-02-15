@@ -58,6 +58,38 @@ const RoutinesLayout = () => {
             ),
           }}
         />
+        <Stack.Screen
+          name="[id]"
+          options={{
+            title: 'Detalle de la rutina',
+            headerTitle: (props) => (
+              <Text variant="titleMedium" {...props} />
+            ),
+            headerRight: () => (
+              <IconButton
+                icon="face-agent"
+                size={24}
+                onPress={handleOpenCustomerService}
+              />
+            ),
+          }}
+        />
+        <Stack.Screen
+          name="exercise/[id]"
+          options={{
+            title: 'Ejercicio',
+            headerTitle: (props) => (
+              <Text variant="titleMedium" {...props} />
+            ),
+            headerRight: () => (
+              <IconButton
+                icon="face-agent"
+                size={24}
+                onPress={handleOpenCustomerService}
+              />
+            ),
+          }}
+        />
       </Stack>
       <CustomerServiceDialog visible={openState} onClose={handleCloseCustomerService} />
     </>

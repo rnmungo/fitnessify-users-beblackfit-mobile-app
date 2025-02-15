@@ -2,17 +2,24 @@ import { View, FlatList } from 'react-native';
 import {
   ActivityIndicator,
   Button,
+  Divider,
   IconButton,
+  List,
   SegmentedButtons,
   Surface,
   Text,
   useTheme,
 } from 'react-native-paper';
 import { useRouter } from 'expo-router';
+import { parseISO, isBefore } from 'date-fns';
 import useQuerySearchRoutines from '@/core/routine/hooks/useQuerySearchRoutines';
 import { formatRoutineDuration } from '@/core/routine/utilities/routineUtils';
-import Skeleton from '@/core/shared/components/skeleton';
 import { ReactQueryStatus } from '@/constants/ReactQuery';
+import { useAuthStore } from '@/core/account/store';
+import { SubscriptionStatus } from '@/core/profile/constants/subscription-status';
+import { EquipmentPreference } from '@/core/profile/constants/equipment';
+import { Level } from '@/core/profile/constants/level';
+import { RoutineStatus } from '@/core/routine/constants/routine-status';
 
 const LEVELS = [
   { label: 'Principiante', value: 'Beginner', icon: 'signal-cellular-1' },
@@ -30,6 +37,7 @@ const EQUIPMENTS = [
 const RoutinesScreen = () => {
   const theme = useTheme();
   const router = useRouter();
+  const { session } = useAuthStore();
 
   const {
     data,
@@ -41,11 +49,44 @@ const RoutinesScreen = () => {
     filtersState,
     setFiltersState
   } = useQuerySearchRoutines({
-    level: 'Beginner',
-    equipment: 'BodyWeight'
+    level: Level.Beginner,
+    equipment: EquipmentPreference.BodyWeight,
+    status: RoutineStatus.Deployed,
+    pageSize: '10',
   });
 
   const routines = data?.pages.flatMap(page => page.results) || [];
+
+  const hasActiveSubscription = session?.subscription?.status === SubscriptionStatus.Active;
+  const dueDate = session?.subscription?.dueDate ? parseISO(session.subscription.dueDate) : null;
+  const isSubscriptionExpired = dueDate ? isBefore(dueDate, new Date()) : true;
+
+  if (!hasActiveSubscription || isSubscriptionExpired) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          alignItems: 'center',
+          paddingHorizontal: 20,
+          paddingVertical: 20,
+        }}
+      >
+        <Text variant="headlineSmall" style={{ textAlign: 'center', color: theme.colors.onSurface }}>
+          No tenés un plan activo
+        </Text>
+        <Text
+          variant="bodyMedium"
+          style={{
+            textAlign: 'center',
+            color: theme.colors.onSurfaceVariant,
+            marginTop: 8,
+          }}
+        >
+          Tenemos que trabajar juntos en tus objetivos, realizá el pago de tu suscripción, envianos el comprobante y activaremos tu cuenta.
+        </Text>
+      </View>
+    );
+  }
 
   return (
     <View style={{ flex: 1, paddingHorizontal: 26, paddingVertical: 30 }}>
@@ -110,8 +151,7 @@ const RoutinesScreen = () => {
         <View
           style={{
             marginTop: 20,
-            display: 'flex',
-            flexDirection: 'column',
+            flex: 1,
             justifyContent: 'center',
             alignItems: 'center',
             gap: 8,
@@ -206,26 +246,32 @@ const RoutinesScreen = () => {
         data={routines}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <Surface
-            style={{ padding: 16, borderRadius: 12, flexDirection: 'row', alignItems: 'center', marginBottom: 12 }}
-            elevation={1}
-          >
-            <View style={{ flex: 1 }}>
-              <Text variant="titleMedium" style={{ color: theme.colors.onSurface }}>
-                {item.name}
-              </Text>
-              <Text variant="bodyMedium" style={{ color: theme.colors.onSurfaceVariant, marginTop: 4 }}>
-                {formatRoutineDuration(item.duration)}
-              </Text>
-            </View>
-            <IconButton
-              icon="chevron-right"
-              size={32}
-              iconColor={theme.colors.onSurface}
-              onPress={() => {}}
+          <>
+            <List.Item
+              style={{
+                paddingRight: 0,
+                paddingBottom: 0,
+                paddingTop: 0,
+              }}
+              title={item.name}
+              description={formatRoutineDuration(item.duration)}
+              right={() => (
+                <IconButton
+                  icon="chevron-right"
+                  size={32}
+                  iconColor={theme.colors.onSurfaceVariant}
+                />
+              )}
+              onPress={() => router.push(`/routines/${item.id}`)}
             />
-          </Surface>
+            <Divider />
+          </>
         )}
+        ListHeaderComponent={
+          routines.length !== 0
+            ? <Divider />
+            : null
+        }
         ListFooterComponent={isFetchingNextPage ? (
           <ActivityIndicator animating size="large" style={{ marginVertical: 16 }} />
         ) : null}

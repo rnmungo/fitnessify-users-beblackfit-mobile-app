@@ -17,7 +17,7 @@ type UseQuerySearchRoutinesResult =
 const useQuerySearchRoutines = (
   filterParams: Record<string, string>
 ): UseQuerySearchRoutinesResult => {
-  const [filtersState, setFiltersState] = useState<Record<string, string>>({ ...filterParams, status: 'Deployed', pageSize: '10' });
+  const [filtersState, setFiltersState] = useState<Record<string, string>>({ ...filterParams });
   const debounceFilters = useDebounce(filtersState, 500);
   const queryClient = useQueryClient();
   const query = useInfiniteQuery<

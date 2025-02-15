@@ -40,14 +40,15 @@ const ProfileLayout = () => {
         <Stack.Screen
           name="index"
           options={{
-            headerTitle: () => (
+            title: 'Mi cuenta',
+            headerTitle: (props) => (
               <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                 <Avatar.Text
                   size={40}
                   label={avatarText}
                   style={{ marginRight: 16, backgroundColor: theme.colors.surfaceVariant }}
                 />
-                <Text variant="titleMedium">Mi cuenta</Text>
+                <Text variant="titleMedium" {...props} />
               </View>
             ),
             headerRight: () => (
@@ -62,8 +63,9 @@ const ProfileLayout = () => {
         <Stack.Screen
           name="edit"
           options={{
-            headerTitle: () => (
-              <Text variant="titleMedium">Editar cuenta</Text>
+            title: 'Editar cuenta',
+            headerTitle: (props) => (
+              <Text variant="titleMedium" {...props} />
             ),
             headerRight: () => (
               <IconButton
@@ -77,8 +79,9 @@ const ProfileLayout = () => {
         <Stack.Screen
           name="change-password"
           options={{
-            headerTitle: () => (
-              <Text variant="titleMedium">Cambiar contraseña</Text>
+            title: 'Cambiar contraseña',
+            headerTitle: (props) => (
+              <Text variant="titleMedium" {...props} />
             ),
             headerRight: () => (
               <IconButton
