@@ -39,14 +39,15 @@ const RoutinesLayout = () => {
         <Stack.Screen
           name="index"
           options={{
-            headerTitle: () => (
+            title: 'Rutinas',
+            headerTitle: (props) => (
               <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                 <Avatar.Text
                   size={40}
                   label={avatarText}
                   style={{ marginRight: 16, backgroundColor: theme.colors.surfaceVariant }}
                 />
-                <Text variant="titleMedium">Rutinas</Text>
+                <Text variant="titleMedium" {...props} />
               </View>
             ),
             headerRight: () => (

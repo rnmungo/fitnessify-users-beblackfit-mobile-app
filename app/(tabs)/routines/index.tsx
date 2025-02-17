@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { View, FlatList } from 'react-native';
 import {
   ActivityIndicator,
@@ -31,7 +32,7 @@ const EQUIPMENTS = [
   { label: 'Pesas', value: 'DumbbellsAndKettlebells' },
   { label: 'Bandas', value: 'Bands' },
   { label: 'Peso corporal', value: 'BodyWeight' },
-  { label: 'Indistinto', value: 'All' },
+  { label: 'Indistinto', value: '' },
 ];
 
 const RoutinesScreen = () => {
@@ -54,6 +55,10 @@ const RoutinesScreen = () => {
     status: RoutineStatus.Deployed,
     pageSize: '10',
   });
+
+  const handleChangeEquipment = useCallback((value: string) => {
+    setFiltersState(prev => ({ ...prev, equipment: value }));
+  }, []);
 
   const routines = data?.pages.flatMap(page => page.results) || [];
 
@@ -143,7 +148,7 @@ const RoutinesScreen = () => {
         </Text>
         <SegmentedButtons
           value={filtersState.equipment}
-          onValueChange={(value) => setFiltersState(prev => ({ ...prev, equipment: value }))}
+          onValueChange={handleChangeEquipment}
           buttons={EQUIPMENTS}
         />
       </View>

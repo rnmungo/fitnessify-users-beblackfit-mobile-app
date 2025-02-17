@@ -41,14 +41,15 @@ const HomeLayout = () => {
         <Stack.Screen
           name="index"
           options={{
-            headerTitle: () => (
+            title: greeting,
+            headerTitle: (props) => (
               <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                 <Avatar.Text
                   size={40}
                   label={avatarText}
                   style={{ marginRight: 16, backgroundColor: theme.colors.surfaceVariant }}
                 />
-                <Text variant="titleMedium">{greeting}</Text>
+                <Text variant="titleMedium" {...props} />
               </View>
             ),
             headerRight: () => (

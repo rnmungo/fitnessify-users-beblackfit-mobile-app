@@ -2,7 +2,7 @@ import { Text, View } from 'react-native';
 
 const ForgotPasswordScreen = () => (
   <View>
-    <Text>RegisterScreen</Text>
+    <Text>ForgotPasswordScreen</Text>
   </View>
 );
 

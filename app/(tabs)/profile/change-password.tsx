@@ -55,10 +55,12 @@ const ChangePasswordScreen = () => {
         },
         {
           onSuccess: () => {
+            mutation.reset();
             snackbar.success('La contraseña fue actualizada, podrá utilizarla en el siguiente inicio de sesión.');
             resetForm();
           },
           onError: () => {
+            mutation.reset();
             snackbar.error('Ocurrió un error al actualizar la contraseña.');
           },
         }
@@ -108,7 +110,7 @@ const ChangePasswordScreen = () => {
   return (
     <ScrollView
       contentContainerStyle={{
-        paddingHorizontal: 16,
+        paddingHorizontal: 40,
         paddingTop: 10,
         paddingBottom: 24,
       }}
@@ -117,6 +119,7 @@ const ChangePasswordScreen = () => {
         style={{
           paddingTop: height * 0.05,
           paddingBottom: 40,
+          paddingHorizontal: 20,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
@@ -127,7 +130,8 @@ const ChangePasswordScreen = () => {
           source={require('@/assets/images/profile-safe.png')}
           style={{
             width: '100%',
-            height: 250,
+            height: 'auto',
+            aspectRatio: '16 / 9',
             resizeMode: 'contain',
           }}
         />

@@ -4,12 +4,15 @@ const defaultStatus = HTTP_STATUS.BAD_REQUEST;
 
 export class BadRequestServiceError extends Error {
   public status: number;
+  public code: string;
   constructor(
     message: string,
-    status: number = defaultStatus
+    code: string,
+    status: number = defaultStatus,
   ) {
     super(message);
-    this.name = 'InternalServiceError';
+    this.name = 'BadRequestServiceError';
+    this.code = code;
     this.status = status;
   }
 }

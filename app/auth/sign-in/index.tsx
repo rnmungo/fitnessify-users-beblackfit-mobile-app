@@ -21,6 +21,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useAuthStore } from '@/core/account/store';
 import { useSnackbar } from '@/core/shared/context/snackbar';
+import Copyright from '@/core/shared/components/copyright';
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -63,7 +64,7 @@ const SignInScreen = () => {
   }, []);
 
   const navigateToRegister = useCallback(() => {
-    router.push('/auth/register');
+    router.push('/auth/sign-up');
   }, [router]);
 
   return (
@@ -80,6 +81,7 @@ const SignInScreen = () => {
           style={{
             paddingTop: height * 0.15,
             paddingBottom: 40,
+            paddingHorizontal: 60,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -89,8 +91,9 @@ const SignInScreen = () => {
           <Image
             source={require('@/assets/images/logo.png')}
             style={{
-              width: 210,
-              height: 160,
+              width: '100%',
+              height: 'auto',
+              aspectRatio: '16 / 9',
               resizeMode: 'contain',
             }}
           />
@@ -186,6 +189,9 @@ const SignInScreen = () => {
           </Button>
         </View>
       </ScrollView>
+      <View style={{ alignItems: 'center', paddingBottom: 20 }}>
+        <Copyright company="BeBlackFit" startYear={2021} />
+      </View>
       <Portal>
         {formik.isSubmitting && (
           <View

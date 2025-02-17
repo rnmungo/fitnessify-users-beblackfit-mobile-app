@@ -157,7 +157,7 @@ const HomeScreen = () => {
               {formatRoutineDuration(lastRoutine.routineDuration)}
             </Text>
           </View>
-          <IconButton mode="outlined" icon="play-circle" size={32} onPress={() => router.push('/(tabs)/routines')} />
+          <IconButton mode="outlined" icon="play-circle" size={32} onPress={() => router.push(`/routines/${lastRoutine.routineId}`)} />
         </Surface>
       )}
       {(userRoutineQuery.status === ReactQueryStatus.Success && !lastRoutine) && (
