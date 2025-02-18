@@ -85,7 +85,7 @@ const ProfileScreen = () => {
         </List.Section>
         <List.Section title="Datos del perfil" style={{ backgroundColor: theme.colors.surfaceVariant }}>
           <List.Item
-            title={`${session?.profile?.name} ${session?.profile?.lastName}`}
+            title={`Nombre completo: ${session?.profile?.name} ${session?.profile?.lastName}`}
             description={`Sexo: ${gender}`}
             right={props => <List.Icon {...props} icon="chevron-right" />}
             style={{ backgroundColor: theme.colors.background }}

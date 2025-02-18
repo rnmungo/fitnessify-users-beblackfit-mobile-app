@@ -24,7 +24,7 @@ const HomeLayout = () => {
       ? `${session?.profile?.name[0].toUpperCase()}${session?.profile?.lastName[0].toUpperCase()}`
       : '';
 
-  const greeting = `Hola ${session?.profile?.name}!`;
+  const greeting = session?.profile?.name ? `Hola ${session?.profile?.name}!` : 'Inicio';
 
   return (
     <>
@@ -44,11 +44,23 @@ const HomeLayout = () => {
             title: greeting,
             headerTitle: (props) => (
               <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                <Avatar.Text
-                  size={40}
-                  label={avatarText}
-                  style={{ marginRight: 16, backgroundColor: theme.colors.surfaceVariant }}
-                />
+                {avatarText
+                  ? <Avatar.Text
+                      size={40}
+                      label={avatarText}
+                      style={{
+                        marginRight: 16,
+                        backgroundColor: theme.colors.surfaceVariant,
+                      }}
+                      color={theme.colors.onSurfaceVariant}
+                    />
+                  : <Avatar.Icon
+                      size={40}
+                      icon="account-outline"
+                      style={{ marginRight: 16, backgroundColor: theme.colors.surfaceVariant }}
+                      color={theme.colors.onSurfaceVariant}
+                    />
+                }
                 <Text variant="titleMedium" {...props} />
               </View>
             ),
