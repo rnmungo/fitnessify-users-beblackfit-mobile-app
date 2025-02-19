@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Link, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
 import {
   Image,
   KeyboardAvoidingView,
@@ -107,15 +107,15 @@ const SignUpScreen = () => {
   }, [router]);
 
   useEffect(() => {
-      const strength = getPasswordStrength(values.password);
-      setPasswordStrength(strength);
+    const strength = getPasswordStrength(values.password);
+    setPasswordStrength(strength);
 
-      if (values.confirmPassword.length > 0) {
-        setPasswordsMatch(values.password === values.confirmPassword);
-      } else {
-        setPasswordsMatch(false);
-      }
-    }, [values.password, values.confirmPassword]);
+    if (values.confirmPassword.length > 0) {
+      setPasswordsMatch(values.password === values.confirmPassword);
+    } else {
+      setPasswordsMatch(false);
+    }
+  }, [values.password, values.confirmPassword]);
 
   const confirmPasswordProps: { helperText?: string; variant?: PasswordInputVariant } = useMemo(() => {
     if (touched.confirmPassword && errors.confirmPassword) {

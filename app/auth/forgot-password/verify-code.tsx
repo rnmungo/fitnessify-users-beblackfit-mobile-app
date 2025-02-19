@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { View, Image, useWindowDimensions } from 'react-native';
 import { useRouter } from 'expo-router';
 import {
@@ -15,10 +15,10 @@ import {
   useClearByFocusCell,
 } from 'react-native-confirmation-code-field';
 import {
-  useMutationSendRecoveryCode,
-  useMutationVerifyCode,
+  useMutationInitializeResetPassword,
+  useMutationVerifyResetCode,
 } from '@/core/account/hooks';
-import { useRegisterStore } from '@/core/account/store';
+import { useForgotPasswordStore } from '@/core/account/store';
 import { useSnackbar } from '@/core/shared/context/snackbar';
 import { ReactQueryStatus } from '@/constants/ReactQuery';
 
@@ -35,18 +35,19 @@ const VerifyCodeScreen = () => {
   const router = useRouter();
   const { height } = useWindowDimensions();
   const snackbar = useSnackbar();
-  const send = useMutationSendRecoveryCode();
-  const verify = useMutationVerifyCode();
-  const { email } = useRegisterStore();
+  const verify = useMutationVerifyResetCode();
+  const initialize = useMutationInitializeResetPassword();
+  const { data, setForgotPasswordData } = useForgotPasswordStore();
 
   const isCodeComplete = value.length === CELL_COUNT;
 
   const handleVerify = useCallback(() => {
-    if (isCodeComplete && email) {
-      verify.mutate({ email, recoveryCode: value }, {
+    if (isCodeComplete && data?.email) {
+      verify.mutate({ email: data.email, code: value }, {
         onSuccess: () => {
+          setForgotPasswordData({ code: value });
           verify.reset();
-          router.replace('/(tabs)/home');
+          router.push('/auth/forgot-password/reset-password');
         },
         onError: () => {
           verify.reset();
@@ -57,14 +58,15 @@ const VerifyCodeScreen = () => {
   }, [value, router]);
 
   const handleResendCode = () => {
-    if (email) {
-      send.mutate({ email }, {
-        onSuccess: () => {
-          send.reset();
+    if (data?.email) {
+      initialize.mutate({ email: data.email }, {
+        onSuccess: (forgotPassword) => {
+          setForgotPasswordData({ token: forgotPassword?.token });
+          initialize.reset();
           snackbar.success('El código fue reenviado correctamente.')
         },
         onError: () => {
-          send.reset();
+          initialize.reset();
           snackbar.error('Ocurrió un error al reenviar el código, vuelva a intentar.')
         },
       });
@@ -75,7 +77,7 @@ const VerifyCodeScreen = () => {
     <View
       style={{
         paddingTop: height * 0.15,
-        paddingHorizontal: 30,
+        paddingHorizontal: 40,
       }}
     >
       <View style={{ alignItems: 'center', marginBottom: 20 }}>
@@ -90,7 +92,7 @@ const VerifyCodeScreen = () => {
           }}
         />
         <Text variant="headlineMedium" style={{ color: theme.colors.onSurfaceVariant, textAlign: 'center' }}>
-          Verificá tu cuenta
+          Verificar código
         </Text>
         <Text variant="bodyMedium" style={{ textAlign: 'center', color: theme.colors.onSurfaceVariant, marginTop: 8 }}>
           Proteger tu identidad es nuestra prioridad, por este motivo hemos enviado un código de verificación a tu
@@ -171,7 +173,7 @@ const VerifyCodeScreen = () => {
         </Text>
       </View>
       <Portal>
-        {send.status === ReactQueryStatus.Pending && (
+        {initialize.status === ReactQueryStatus.Pending && (
           <View
             style={{
               position: 'absolute',

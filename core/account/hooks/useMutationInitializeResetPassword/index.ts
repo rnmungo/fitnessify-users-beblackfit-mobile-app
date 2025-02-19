@@ -1,0 +1,3 @@
+import useMutationInitializeResetPassword from './useMutationInitializeResetPassword';
+
+export default useMutationInitializeResetPassword;

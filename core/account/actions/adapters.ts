@@ -4,9 +4,11 @@ import type { BaseSession, Profile, Subscription } from '../interfaces/session';
 import type {
   AuthorizationData,
   DecodedToken,
+  InitializeResetPasswordData,
   ProfileData,
   SubscriptionData,
 } from './types';
+import { ForgotPasswordToken } from '../interfaces/forgot-password';
 
 export const adaptAuthorization = (data: AuthorizationData): BaseSession => {
   const decodedToken = jwtDecode<DecodedToken>(data.token);
@@ -61,4 +63,8 @@ export const adaptSubscription = (responseData: SubscriptionData): Subscription 
   userTenantId: responseData.userTenantId,
   planId: responseData.planId,
   planName: responseData.plan.name,
+});
+
+export const adaptForgotPasswordToken = (responseData: InitializeResetPasswordData): ForgotPasswordToken => ({
+  token: responseData.token,
 });
