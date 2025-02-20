@@ -47,8 +47,12 @@ const genderOptions = [
 ];
 
 const validationSchema = Yup.object().shape({
-  name: Yup.string().required('El nombre es requerido'),
-  lastName: Yup.string().required('El apellido es requerido'),
+  name: Yup.string()
+    .min(2, 'Debe tener al menos 2 caracteres')
+    .required('El nombre es requerido'),
+  lastName: Yup.string()
+    .min(2, 'Debe tener al menos 2 caracteres')
+    .required('El apellido es requerido'),
   weight: Yup.number()
     .typeError('Ingrese un valor numérico')
     .required('El peso es requerido')
