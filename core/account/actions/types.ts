@@ -23,6 +23,7 @@ export interface ProfileData {
   physicalState: string;
   gender: string;
   level: string;
+  onBoardingStatus: string;
   tenant: {
     name: string;
     email: string;

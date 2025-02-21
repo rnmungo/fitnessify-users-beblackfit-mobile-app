@@ -11,6 +11,7 @@ interface UpdateProfileParams {
   goals: Array<string>;
   physicalState: string;
   gender: string;
+  completeOnBoarding: boolean;
 };
 
 const updateProfile = async (profileData: UpdateProfileParams): Promise<ProfileUpdated> => {

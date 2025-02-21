@@ -6,7 +6,7 @@ import {
   Icon,
   useTheme,
 } from 'react-native-paper';
-import { AUTH_STATUS } from '@/core/account/constants';
+import { AUTH_STATUS, ONBOARDING_STATUS } from '@/core/account/constants';
 import { useAuthStore } from '@/core/account/store';
 
 const GuardLayout = () => {
@@ -34,6 +34,10 @@ const GuardLayout = () => {
 
   if (session?.status === AUTH_STATUS.UNAUTHENTICATED) {
     return <Redirect href="/auth/sign-in" />;
+  }
+
+  if (session?.profile?.onBoardingStatus !== ONBOARDING_STATUS.COMPLETED) {
+    return <Redirect href="/onboarding/step-one" />;
   }
 
   return (

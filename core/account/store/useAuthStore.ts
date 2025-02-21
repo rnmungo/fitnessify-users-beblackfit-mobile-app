@@ -2,9 +2,8 @@ import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import isEmpty from 'lodash.isempty';
-import { ProfileUpdated, Session } from '../interfaces/session';
+import { ProfileUpdated, Session, Subscription } from '../interfaces/session';
 import { getMyProfile, signIn } from '../actions/auth-actions';
-import { getSubscription } from '../actions/subscription-actions';
 import { AUTH_STATUS } from '../constants';
 import { SecureStorage } from '@/core/shared/utilities/secure-storage';
 import { StorageKeys } from '@/constants/StorageKeys';
@@ -15,6 +14,7 @@ export interface AuthState {
   checkStatus: () => Promise<void>;
   signIn: (email: string, password: string) => Promise<boolean>;
   signOut: () => Promise<void>;
+  setSubscription: (subscription?: Subscription) => void;
   reloadProfile: (profile: ProfileUpdated) => void;
 };
 
@@ -58,16 +58,13 @@ export const useAuthStore = create<AuthState>()(
         try {
           const authData = await signIn({ email, password });
           let profile = undefined;
-          let subscription = undefined;
 
           if (authData && authData.authorization?.token) {
             await SecureStorage.setItem(StorageKeys.TOKEN_KEY, authData.authorization.token);
 
             profile = await getMyProfile();
 
-            subscription = await getSubscription();
-
-            set({ session: { ...authData, profile, subscription } });
+            set({ session: { ...authData, profile } });
 
             return true;
           }
@@ -94,7 +91,7 @@ export const useAuthStore = create<AuthState>()(
         set({ session: undefined });
       },
 
-      reloadProfile: async (profile: ProfileUpdated) => {
+      reloadProfile: (profile: ProfileUpdated) => {
         const sessionState = get().session;
 
         set({
@@ -108,6 +105,21 @@ export const useAuthStore = create<AuthState>()(
               ...profile,
               tenant: sessionState?.profile?.tenant || { name: '', email: '' },
             },
+          },
+        });
+      },
+
+      setSubscription: (subscription?: Subscription) => {
+        const sessionState = get().session;
+
+        set({
+          session: {
+            applicationId: sessionState?.applicationId || '',
+            status: sessionState?.status || AUTH_STATUS.CHECKING,
+            authorization: sessionState?.authorization,
+            user: sessionState?.user,
+            profile: sessionState?.profile,
+            subscription,
           },
         });
       },

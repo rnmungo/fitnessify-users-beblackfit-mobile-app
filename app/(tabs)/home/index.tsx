@@ -1,7 +1,7 @@
-import { useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useRouter } from 'expo-router';
 import { parseISO, differenceInDays } from 'date-fns';
-import { Linking, View, ScrollView } from 'react-native';
+import { Linking, RefreshControl, ScrollView, View } from 'react-native';
 import {
   Avatar,
   Button,
@@ -16,6 +16,7 @@ import { ReactQueryStatus } from '@/constants/ReactQuery';
 import { ExternalLinks } from '@/constants/ExternalLinks';
 import { useAuthStore } from '@/core/account/store';
 import useQuerySearchUserRoutine from '@/core/routine/hooks/useQuerySearchUserRoutine';
+import useQueryMySubscription from '@/core/account/hooks/useQueryMySubscription';
 import {
   getRoutineLevelNumber,
   formatRoutineDuration,
@@ -31,8 +32,24 @@ type SubscriptionProps = {
 const HomeScreen = () => {
   const theme = useTheme();
   const router = useRouter();
-  const { session } = useAuthStore();
+  const { session, setSubscription } = useAuthStore();
   const userRoutineQuery = useQuerySearchUserRoutine({ userId: session?.user?.id || '' });
+  const subscriptionQuery = useQueryMySubscription();
+
+  useEffect(() => {
+    if (subscriptionQuery.status === ReactQueryStatus.Success) {
+      setSubscription(subscriptionQuery.data ?? undefined);
+    }
+  }, []);
+
+  const handleOnRefresh = useCallback(() => {
+    subscriptionQuery.refetch();
+    userRoutineQuery.refetch();
+  }, [subscriptionQuery.refetch, userRoutineQuery.refetch]);
+
+  const isRefreshing =
+    subscriptionQuery.status === ReactQueryStatus.Pending ||
+    userRoutineQuery.status === ReactQueryStatus.Pending
 
   const subscriptionProps: SubscriptionProps | undefined = useMemo(() => {
     if (session?.subscription) {
@@ -67,7 +84,21 @@ const HomeScreen = () => {
   const lastRoutine = lastRoutines.length > 0 ? lastRoutines[0] : undefined;
 
   return (
-    <ScrollView contentContainerStyle={{ flex: 1, paddingHorizontal: 26, paddingVertical: 30, flexDirection: 'column', gap: 20 }}>
+    <ScrollView
+      contentContainerStyle={{
+        flex: 1,
+        paddingHorizontal: 26,
+        paddingVertical: 30,
+        flexDirection: 'column',
+        gap: 20,
+      }}
+      refreshControl={
+        <RefreshControl
+          refreshing={isRefreshing}
+          onRefresh={handleOnRefresh}
+        />
+      }
+    >
       {userRoutineQuery.status === ReactQueryStatus.Pending && (
         <Surface
           style={{
@@ -216,7 +247,64 @@ const HomeScreen = () => {
           </Button>
         </Card.Actions>
       </Card>
-      {subscriptionProps && (
+      {subscriptionQuery.status === ReactQueryStatus.Pending && (
+        <Surface
+          style={{
+            padding: 16,
+            borderRadius: 12,
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}
+          elevation={1}
+        >
+          <View style={{ flex: 1, marginLeft: 12 }}>
+            <Skeleton width="80%" height={20} />
+            <Skeleton width="50%" height={16} style={{ marginTop: 4 }} />
+          </View>
+        </Surface>
+      )}
+      {subscriptionQuery.status === ReactQueryStatus.Error && (
+        <Surface
+          style={{
+            padding: 16,
+            borderRadius: 12,
+            flexDirection: 'row',
+            alignItems: 'center',
+            backgroundColor: theme.colors.onError,
+          }}
+          elevation={1}
+        >
+          <View style={{ flex: 1 }}>
+            <Text
+              variant="titleMedium"
+              style={{
+                color: theme.colors.error,
+              }}
+            >
+              Ocurrió un error inesperado
+            </Text>
+            <Text
+              variant="bodyMedium"
+              style={{
+                color: theme.colors.onErrorContainer,
+                marginTop: 4,
+              }}
+            >
+              No pudimos recuperar la información de tu subscripción. Intenta nuevamente.
+            </Text>
+          </View>
+          <IconButton
+            mode="outlined"
+            icon="refresh"
+            size={32}
+            iconColor={theme.colors.onError}
+            containerColor={theme.colors.error}
+            rippleColor={theme.colors.errorContainer}
+            onPress={() => subscriptionQuery.refetch()}
+          />
+        </Surface>
+      )}
+      {(subscriptionQuery.status === ReactQueryStatus.Success && subscriptionProps) && (
         <Surface
           style={{ padding: 16, borderRadius: 12, flexDirection: 'row', alignItems: 'center' }}
           elevation={1}
@@ -230,6 +318,21 @@ const HomeScreen = () => {
             </Text>
           </View>
           <IconButton icon="chevron-right" size={32} iconColor="white" onPress={subscriptionProps.onPress} />
+        </Surface>
+      )}
+      {(subscriptionQuery.status === ReactQueryStatus.Success && !subscriptionProps) && (
+        <Surface
+          style={{ padding: 16, borderRadius: 12, flexDirection: 'row', alignItems: 'center' }}
+          elevation={1}
+        >
+          <View style={{ flex: 1 }}>
+            <Text variant="titleMedium" style={{ color: theme.colors.onSurface }}>
+            No tenés un plan activo
+            </Text>
+            <Text variant="bodyMedium" style={{ color: theme.colors.onSurfaceVariant, marginTop: 4 }}>
+            Tenemos que trabajar juntos en tus objetivos, realizá el pago de tu suscripción, envianos el comprobante y activaremos tu cuenta.
+            </Text>
+          </View>
         </Surface>
       )}
     </ScrollView>

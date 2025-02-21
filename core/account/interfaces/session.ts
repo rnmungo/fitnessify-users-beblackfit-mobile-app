@@ -1,5 +1,7 @@
 export type AuthStatus = 'authenticated' | 'checking' | 'unauthenticated';
 
+export type OnBoardingStatus = 'Completed' | 'Draft' | 'Omitted';
+
 export interface Authorization {
   expires: number;
   issuedAt: number;
@@ -25,6 +27,7 @@ export interface Profile {
   physicalState: string;
   gender: string;
   level: string;
+  onBoardingStatus: OnBoardingStatus;
   tenant: {
     name: string;
     email: string;

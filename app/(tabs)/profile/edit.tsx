@@ -105,8 +105,9 @@ const EditProfileScreen = () => {
         ...values,
         weight: Number(values.weight),
         height: Number(values.height),
+        completeOnBoarding: false,
       }, {
-        onSuccess: async (data: ProfileUpdated) => {
+        onSuccess: (data: ProfileUpdated) => {
           updateProfile.reset();
           snackbar.success('Perfil actualizado con éxito.');
           reloadProfile(data);

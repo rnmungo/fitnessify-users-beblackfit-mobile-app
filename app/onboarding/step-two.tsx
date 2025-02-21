@@ -16,8 +16,8 @@ const OnboardingStepTwoScreen = () => {
   const [preferNotToSay, setPreferNotToSay] = useState<boolean>(data.gender === 'Unspecified');
 
   const GENDERS = [
-    { label: 'Mujer', value: 'Female', icon: 'gender-female' },
-    { label: 'Hombre', value: 'Male', icon: 'gender-male' },
+    { label: 'Mujer', value: 'Female' as Gender, icon: 'gender-female' },
+    { label: 'Hombre', value: 'Male' as Gender, icon: 'gender-male' },
   ];
 
   const handleSelectGender = useCallback((value: string) => {

@@ -19,7 +19,8 @@ const OnboardingStepFourScreen = () => {
   const { height } = useWindowDimensions();
   const { setOnboardingData, data } = useOnboardingStore();
 
-  const initialFrequencyIndex = FREQUENCY_OPTIONS.findIndex(option => option.value === data.physicalState) ?? 0;
+  const frequencyIndex = FREQUENCY_OPTIONS.findIndex(option => option.value === data.physicalState);
+  const initialFrequencyIndex = frequencyIndex === -1 ? 0 : frequencyIndex;
   const [selectedFrequency, setSelectedFrequency] = useState<number>(initialFrequencyIndex);
 
   const handleNext = useCallback(() => {

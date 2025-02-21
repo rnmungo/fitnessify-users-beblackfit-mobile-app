@@ -1,6 +1,6 @@
 import { jwtDecode } from 'jwt-decode';
 import { AUTH_STATUS } from '../constants';
-import type { BaseSession, Profile, Subscription } from '../interfaces/session';
+import type { BaseSession, OnBoardingStatus, Profile, Subscription } from '../interfaces/session';
 import type {
   AuthorizationData,
   DecodedToken,
@@ -50,6 +50,7 @@ export const adaptProfile = (data: ProfileData): Profile => ({
   physicalState: data.physicalState,
   gender: data.gender,
   level: data.level,
+  onBoardingStatus: data.onBoardingStatus as OnBoardingStatus,
   tenant: {
     name: data.tenant.name,
     email: data.tenant.email

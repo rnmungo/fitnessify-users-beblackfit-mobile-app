@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { View, FlatList } from 'react-native';
 import {
   ActivityIndicator,
@@ -21,6 +21,7 @@ import { SubscriptionStatus } from '@/core/profile/constants/subscription-status
 import { EquipmentPreference } from '@/core/profile/constants/equipment';
 import { Level } from '@/core/profile/constants/level';
 import { RoutineStatus } from '@/core/routine/constants/routine-status';
+import useQueryMySubscription from '@/core/account/hooks/useQueryMySubscription';
 
 const LEVELS = [
   { label: 'Principiante', value: 'Beginner', icon: 'signal-cellular-1' },
@@ -38,7 +39,8 @@ const EQUIPMENTS = [
 const RoutinesScreen = () => {
   const theme = useTheme();
   const router = useRouter();
-  const { session } = useAuthStore();
+  const { session, setSubscription } = useAuthStore();
+  const subscriptionQuery = useQueryMySubscription();
 
   const {
     data,
@@ -65,6 +67,32 @@ const RoutinesScreen = () => {
   const hasActiveSubscription = session?.subscription?.status === SubscriptionStatus.Active;
   const dueDate = session?.subscription?.dueDate ? parseISO(session.subscription.dueDate) : null;
   const isSubscriptionExpired = dueDate ? isBefore(dueDate, new Date()) : true;
+
+  useEffect(() => {
+    if (subscriptionQuery.status === ReactQueryStatus.Success) {
+      setSubscription(subscriptionQuery.data ?? undefined);
+    }
+  }, []);
+
+  if (subscriptionQuery.status === ReactQueryStatus.Pending) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: 8,
+          paddingHorizontal: 20,
+          paddingVertical: 20,
+        }}
+      >
+        <ActivityIndicator animating size="large" color={theme.colors.onSurfaceVariant} />
+        <Text variant="bodyMedium" style={{ color: theme.colors.onSurfaceVariant }}>
+          Buscando suscripción
+        </Text>
+      </View>
+    );
+  }
 
   if (!hasActiveSubscription || isSubscriptionExpired) {
     return (
