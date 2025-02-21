@@ -40,7 +40,7 @@ const RoutinesScreen = () => {
   const theme = useTheme();
   const router = useRouter();
   const { session, setSubscription } = useAuthStore();
-  const subscriptionQuery = useQueryMySubscription();
+  const subscriptionQuery = useQueryMySubscription({ userId: session?.user?.id || '' });
 
   const {
     data,
@@ -70,9 +70,9 @@ const RoutinesScreen = () => {
 
   useEffect(() => {
     if (subscriptionQuery.status === ReactQueryStatus.Success) {
-      setSubscription(subscriptionQuery.data ?? undefined);
+      setSubscription(subscriptionQuery.data ? subscriptionQuery.data : undefined);
     }
-  }, []);
+  }, [subscriptionQuery.status]);
 
   if (subscriptionQuery.status === ReactQueryStatus.Pending) {
     return (

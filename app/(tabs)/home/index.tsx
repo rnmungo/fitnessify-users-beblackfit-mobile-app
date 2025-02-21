@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo } from 'react';
 import { useRouter } from 'expo-router';
 import { parseISO, differenceInDays } from 'date-fns';
+import isEmpty from 'lodash.isempty';
 import { Linking, RefreshControl, ScrollView, View } from 'react-native';
 import {
   Avatar,
@@ -34,13 +35,13 @@ const HomeScreen = () => {
   const router = useRouter();
   const { session, setSubscription } = useAuthStore();
   const userRoutineQuery = useQuerySearchUserRoutine({ userId: session?.user?.id || '' });
-  const subscriptionQuery = useQueryMySubscription();
+  const subscriptionQuery = useQueryMySubscription({ userId: session?.user?.id || '' });
 
   useEffect(() => {
     if (subscriptionQuery.status === ReactQueryStatus.Success) {
-      setSubscription(subscriptionQuery.data ?? undefined);
+      setSubscription(subscriptionQuery.data ? subscriptionQuery.data : undefined);
     }
-  }, []);
+  }, [subscriptionQuery.status]);
 
   const handleOnRefresh = useCallback(() => {
     subscriptionQuery.refetch();
@@ -78,7 +79,7 @@ const HomeScreen = () => {
     }
 
     return undefined;
-  }, []);
+  }, [session?.subscription]);
 
   const lastRoutines = (userRoutineQuery.data?.results || []);
   const lastRoutine = lastRoutines.length > 0 ? lastRoutines[0] : undefined;
@@ -304,7 +305,7 @@ const HomeScreen = () => {
           />
         </Surface>
       )}
-      {(subscriptionQuery.status === ReactQueryStatus.Success && subscriptionProps) && (
+      {(subscriptionQuery.status === ReactQueryStatus.Success && !isEmpty(subscriptionProps)) && (
         <Surface
           style={{ padding: 16, borderRadius: 12, flexDirection: 'row', alignItems: 'center' }}
           elevation={1}
@@ -320,7 +321,7 @@ const HomeScreen = () => {
           <IconButton icon="chevron-right" size={32} iconColor="white" onPress={subscriptionProps.onPress} />
         </Surface>
       )}
-      {(subscriptionQuery.status === ReactQueryStatus.Success && !subscriptionProps) && (
+      {(subscriptionQuery.status === ReactQueryStatus.Success && isEmpty(subscriptionProps)) && (
         <Surface
           style={{ padding: 16, borderRadius: 12, flexDirection: 'row', alignItems: 'center' }}
           elevation={1}
