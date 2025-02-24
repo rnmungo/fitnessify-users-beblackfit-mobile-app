@@ -13,6 +13,7 @@ import { useAuthStore } from '@/core/account/store';
 import {
   EQUIPMENT_TRANSLATION,
   GENDER_TRANSLATION,
+  GOALS_TRANSLATION,
   PHYSICAL_STATE_TRANSLATION,
 } from '@/core/profile/constants';
 import { getStatusByBMI } from '@/core/profile/utilities/healthUtils';
@@ -40,7 +41,7 @@ const ProfileScreen = () => {
 
   const goals =
     (session?.profile?.goals || []).length > 0
-      ? session?.profile?.goals.join(', ')
+      ? session?.profile?.goals.map(goal => GOALS_TRANSLATION[goal]).join(', ')
       : 'Sin selección';
 
   const equipment =

@@ -1,5 +1,6 @@
 import { EQUIPMENT_TRANSLATION } from './equipment';
 import { GENDER, GENDER_TRANSLATION } from './gender';
+import { GOALS_TRANSLATION } from './goals';
 import { LEVEL_TRANSLATION } from './level';
 import { PHYSICAL_STATE, PHYSICAL_STATE_TRANSLATION } from './physical-state';
 
@@ -7,6 +8,7 @@ export {
   EQUIPMENT_TRANSLATION,
   GENDER,
   GENDER_TRANSLATION,
+  GOALS_TRANSLATION,
   LEVEL_TRANSLATION,
   PHYSICAL_STATE,
   PHYSICAL_STATE_TRANSLATION,
