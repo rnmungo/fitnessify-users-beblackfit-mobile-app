@@ -87,7 +87,7 @@ const HomeScreen = () => {
   return (
     <ScrollView
       contentContainerStyle={{
-        flex: 1,
+        flexGrow: 1,
         paddingHorizontal: 26,
         paddingVertical: 30,
         flexDirection: 'column',
@@ -111,7 +111,7 @@ const HomeScreen = () => {
           elevation={1}
         >
           <Skeleton width={40} height={40} borderRadius={50} />
-          <View style={{ flex: 1, marginLeft: 12 }}>
+          <View style={{ marginLeft: 12 }}>
             <Skeleton width="80%" height={20} />
             <Skeleton width="50%" height={16} style={{ marginTop: 4 }} />
           </View>
@@ -258,7 +258,7 @@ const HomeScreen = () => {
           }}
           elevation={1}
         >
-          <View style={{ flex: 1, marginLeft: 12 }}>
+          <View style={{ marginLeft: 12 }}>
             <Skeleton width="80%" height={20} />
             <Skeleton width="50%" height={16} style={{ marginTop: 4 }} />
           </View>
