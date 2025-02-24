@@ -15,7 +15,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#1F1F1F"
-      }
+      },
+      "package": "com.fitnessify.beblackfit"
     },
     "web": {
       "bundler": "metro",
@@ -52,6 +53,14 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "bb9fd6b5-f4cb-4629-a855-eee881695d54"
+      }
     }
   }
 }
