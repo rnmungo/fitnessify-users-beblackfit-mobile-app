@@ -79,7 +79,7 @@ const SignInScreen = () => {
       <ScrollView style={{ paddingHorizontal: 40 }}>
         <View
           style={{
-            paddingTop: height * 0.15,
+            paddingTop: height * 0.1,
             paddingBottom: 40,
             paddingHorizontal: 60,
             display: 'flex',
@@ -189,8 +189,8 @@ const SignInScreen = () => {
           </Button>
         </View>
       </ScrollView>
-      <View style={{ alignItems: 'center', paddingBottom: 20 }}>
-        <Copyright company="BeBlackFit" startYear={2021} />
+      <View style={{ alignItems: 'center', paddingVertical: 20 }}>
+        <Copyright company="BeBlackFit" startYear={2023} />
       </View>
       <Portal>
         {formik.isSubmitting && (
