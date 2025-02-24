@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "fitnessify-users-beblackfit-mobile-app",
-    "slug": "fitnessify-users-beblackfit-mobile-app",
+    "slug": "BeBlackFit",
     "version": "1.0.0-alpha",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
