@@ -128,6 +128,7 @@ const RoutinesScreen = () => {
   return (
     <View
       style={{
+        flex: 1,
         paddingHorizontal: 26,
         paddingVertical: 30,
       }}
@@ -329,9 +330,6 @@ const RoutinesScreen = () => {
         )}
       </View>
       <FlatList
-        contentContainerStyle={{
-          flexGrow: 1,
-        }}
         data={routines}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
