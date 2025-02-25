@@ -128,10 +128,7 @@ const RoutinesScreen = () => {
   return (
     <View
       style={{
-        flex: 1,
         paddingHorizontal: 26,
-        paddingVertical: 30,
-        height: '100%',
       }}
     >
       <View
@@ -140,6 +137,7 @@ const RoutinesScreen = () => {
           flexDirection: 'row',
           alignItems: 'center',
           justifyContent: 'space-between',
+          paddingTop: 30,
         }}
       >
         <Text
@@ -240,98 +238,99 @@ const RoutinesScreen = () => {
       >
         Elegí la rutina que más se adapte a tus preferencias
       </Text>
-      {status === ReactQueryStatus.Pending && (
-        <View
-          style={{
-            marginTop: 20,
-            justifyContent: 'center',
-            alignItems: 'center',
-            gap: 8,
-          }}
-        >
-          <ActivityIndicator animating size="large" color={theme.colors.onSurfaceVariant} />
-          <Text variant="bodyMedium" style={{ color: theme.colors.onSurfaceVariant }}>
-            Buscando rutinas
-          </Text>
-        </View>
-      )}
-      {status === ReactQueryStatus.Error && (
-        <Surface
-          style={{
-            marginTop: 20,
-            padding: 16,
-            borderRadius: 12,
-            flexDirection: 'row',
-            alignItems: 'center',
-            backgroundColor: theme.colors.onError,
-          }}
-          elevation={1}
-        >
-          <View style={{ flex: 1 }}>
-            <Text
-              variant="titleMedium"
-              style={{
-                color: theme.colors.error,
-              }}
-            >
-              Ocurrió un error inesperado
+      <View style={{ marginVertical: 20 }}>
+        {status === ReactQueryStatus.Pending && (
+          <View
+            style={{
+              marginTop: 20,
+              justifyContent: 'center',
+              alignItems: 'center',
+              gap: 8,
+            }}
+          >
+            <ActivityIndicator animating size="large" color={theme.colors.onSurfaceVariant} />
+            <Text variant="bodyMedium" style={{ color: theme.colors.onSurfaceVariant }}>
+              Buscando rutinas
             </Text>
+          </View>
+        )}
+        {status === ReactQueryStatus.Error && (
+          <Surface
+            style={{
+              marginTop: 20,
+              padding: 16,
+              borderRadius: 12,
+              flexDirection: 'row',
+              alignItems: 'center',
+              backgroundColor: theme.colors.onError,
+            }}
+            elevation={1}
+          >
+            <View style={{ flex: 1 }}>
+              <Text
+                variant="titleMedium"
+                style={{
+                  color: theme.colors.error,
+                }}
+              >
+                Ocurrió un error inesperado
+              </Text>
+              <Text
+                variant="bodyMedium"
+                style={{
+                  color: theme.colors.onErrorContainer,
+                  marginTop: 4,
+                }}
+              >
+                No pudimos recuperar las rutinas. Intenta nuevamente.
+              </Text>
+            </View>
+            <IconButton
+              mode="outlined"
+              icon="refresh"
+              size={32}
+              iconColor={theme.colors.onError}
+              containerColor={theme.colors.error}
+              rippleColor={theme.colors.errorContainer}
+              onPress={() => refetch()}
+            />
+          </Surface>
+        )}
+        {status === ReactQueryStatus.Success && routines.length === 0 && (
+          <View
+            style={{
+              marginTop: 20,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'flex-start',
+              gap: 8,
+            }}
+          >
             <Text
               variant="bodyMedium"
               style={{
-                color: theme.colors.onErrorContainer,
-                marginTop: 4,
+                color: theme.colors.onSurfaceVariant,
+                textAlign: 'left',
               }}
             >
-              No pudimos recuperar las rutinas. Intenta nuevamente.
+              No encontramos rutinas con los filtros seleccionados, intenta ajustar los filtros para ver más opciones.
             </Text>
+            <Button
+              mode="outlined"
+              onPress={() => setFiltersState({
+                level: Level.Beginner,
+                equipment: EquipmentPreference.BodyWeight,
+              })}
+              style={{ marginTop: 12 }}
+            >
+              REESTABLECER FILTROS
+            </Button>
           </View>
-          <IconButton
-            mode="outlined"
-            icon="refresh"
-            size={32}
-            iconColor={theme.colors.onError}
-            containerColor={theme.colors.error}
-            rippleColor={theme.colors.errorContainer}
-            onPress={() => refetch()}
-          />
-        </Surface>
-      )}
-      {status === ReactQueryStatus.Success && routines.length === 0 && (
-        <View
-          style={{
-            marginTop: 20,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'flex-start',
-            gap: 8,
-          }}
-        >
-          <Text
-            variant="bodyMedium"
-            style={{
-              color: theme.colors.onSurfaceVariant,
-              textAlign: 'left',
-            }}
-          >
-            No encontramos rutinas con los filtros seleccionados, intenta ajustar los filtros para ver más opciones.
-          </Text>
-          <Button
-            mode="outlined"
-            onPress={() => setFiltersState({
-              level: Level.Beginner,
-              equipment: EquipmentPreference.BodyWeight,
-            })}
-            style={{ marginTop: 12 }}
-          >
-            REESTABLECER FILTROS
-          </Button>
-        </View>
-      )}
+        )}
+      </View>
       <FlatList
-        style={{
+        contentContainerStyle={{
           flexGrow: 1,
-          marginTop: 20,
         }}
         data={routines}
         keyExtractor={(item) => item.id}
