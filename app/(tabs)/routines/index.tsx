@@ -303,33 +303,28 @@ const RoutinesScreen = () => {
             marginTop: 20,
             display: 'flex',
             flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
+            alignItems: 'flex-start',
             gap: 8,
           }}
         >
           <Text
-            variant="titleMedium"
-            style={{ color: theme.colors.onSurfaceVariant, textAlign: 'center' }}
-          >
-            No encontramos rutinas con los filtros seleccionados
-          </Text>
-          <Text
             variant="bodyMedium"
             style={{
               color: theme.colors.onSurfaceVariant,
-              textAlign: 'center',
-              marginTop: 4,
+              textAlign: 'left',
             }}
           >
-            Intenta ajustar los filtros para ver más opciones.
+            No encontramos rutinas con los filtros seleccionados, intenta ajustar los filtros para ver más opciones.
           </Text>
           <Button
             mode="outlined"
-            onPress={() => setFiltersState({ level: 'Beginner', equipment: 'All' })}
+            onPress={() => setFiltersState({
+              level: Level.Beginner,
+              equipment: EquipmentPreference.BodyWeight,
+            })}
             style={{ marginTop: 12 }}
           >
-            Restablecer Filtros
+            REESTABLECER FILTROS
           </Button>
         </View>
       )}
