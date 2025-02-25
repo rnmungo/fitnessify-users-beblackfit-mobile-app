@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { View, FlatList } from 'react-native';
 import {
   ActivityIndicator,
@@ -6,6 +6,9 @@ import {
   Divider,
   IconButton,
   List,
+  Modal,
+  Portal,
+  RadioButton,
   SegmentedButtons,
   Surface,
   Text,
@@ -37,6 +40,7 @@ const EQUIPMENTS = [
 ];
 
 const RoutinesScreen = () => {
+  const [filtersVisibleState, setFiltersVisibleState] = useState<boolean>(false);
   const theme = useTheme();
   const router = useRouter();
   const { session, setSubscription } = useAuthStore();
@@ -122,69 +126,124 @@ const RoutinesScreen = () => {
   }
 
   return (
-    <View style={{ flex: 1, paddingHorizontal: 26, paddingVertical: 30 }}>
-      <Text
-        variant="headlineMedium"
+    <View
+      style={{
+        flex: 1,
+        paddingHorizontal: 26,
+        paddingVertical: 30,
+        height: '100%',
+      }}
+    >
+      <View
         style={{
-          color: theme.colors.onSurface,
-          fontWeight: 'bold',
-          textAlign: 'center',
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
         }}
       >
-        Comenzá a entrenar
-      </Text>
+        <Text
+          variant="headlineMedium"
+          style={{
+            color: theme.colors.onSurface,
+            fontWeight: 'bold',
+            textAlign: 'center',
+          }}
+        >
+          Comenzá a entrenar
+        </Text>
+        <IconButton
+          icon="filter-variant"
+          size={26}
+          onPress={() => setFiltersVisibleState(true)}
+          iconColor={theme.colors.primary}
+        />
+        <Portal>
+          <Modal
+            visible={filtersVisibleState}
+            onDismiss={() => setFiltersVisibleState(false)}
+            contentContainerStyle={{
+              flex: 1,
+              backgroundColor: theme.colors.background,
+            }}
+          >
+            <View style={{ flex: 1, padding: 20 }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                <Text
+                  variant="headlineSmall"
+                  style={{
+                    color: theme.colors.onSurfaceVariant,
+                    textAlign: 'center',
+                    marginBottom: 20,
+                  }}
+                >
+                  Filtros
+                </Text>
+                <IconButton
+                  icon="close"
+                  size={26}
+                  style={{ alignSelf: 'flex-end' }}
+                  onPress={() => setFiltersVisibleState(false)}
+                />
+              </View>
+              <Text
+                variant="bodyLarge"
+                style={{
+                  color: theme.colors.onSurfaceVariant,
+                  marginBottom: 10,
+                  marginTop: 20,
+                }}
+              >
+                Dificultad
+              </Text>
+              <SegmentedButtons
+                value={filtersState.level}
+                onValueChange={(value) => setFiltersState(prev => ({ ...prev, level: value }))}
+                buttons={LEVELS}
+              />
+              <Text
+                variant="bodyLarge"
+                style={{
+                  color: theme.colors.onSurfaceVariant,
+                  marginTop: 20,
+                  marginBottom: 10,
+                }}
+              >
+                Preferencia de equipamiento
+              </Text>
+              <RadioButton.Group
+                onValueChange={(value) => handleChangeEquipment(value)}
+                value={filtersState.equipment}
+              >
+                {EQUIPMENTS.map((item) => (
+                  <RadioButton.Item
+                    key={item.value}
+                    label={item.label}
+                    value={item.value}
+                    color={theme.colors.primary}
+                  />
+                ))}
+              </RadioButton.Group>
+              <Button mode="contained" onPress={() => setFiltersVisibleState(false)} style={{ marginTop: 20 }}>
+                APLICAR FILTROS
+              </Button>
+            </View>
+          </Modal>
+        </Portal>
+      </View>
       <Text
         variant="bodyLarge"
         style={{
           color: theme.colors.onSurfaceVariant,
-          textAlign: 'center',
+          textAlign: 'left',
         }}
       >
         Elegí la rutina que más se adapte a tus preferencias
       </Text>
-      <View
-        style={{
-          marginTop: 20,
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 10,
-          width: '100%',
-        }}
-      >
-        <Text
-          variant="bodyLarge"
-          style={{
-            color: theme.colors.onSurfaceVariant,
-            textAlign: 'center',
-          }}
-        >
-          Dificultad
-        </Text>
-        <SegmentedButtons
-          value={filtersState.level}
-          onValueChange={(value) => setFiltersState(prev => ({ ...prev, level: value }))}
-          buttons={LEVELS}
-        />
-        <Text
-          variant="bodyLarge"
-          style={{
-            color: theme.colors.onSurfaceVariant,
-            textAlign: 'center',
-          }}
-        >
-          Preferencia de equipamiento
-        </Text>
-        <SegmentedButtons
-          value={filtersState.equipment}
-          onValueChange={handleChangeEquipment}
-          buttons={EQUIPMENTS}
-        />
-      </View>
       {status === ReactQueryStatus.Pending && (
         <View
           style={{
             marginTop: 20,
-            flex: 1,
             justifyContent: 'center',
             alignItems: 'center',
             gap: 8,
@@ -275,7 +334,10 @@ const RoutinesScreen = () => {
         </View>
       )}
       <FlatList
-        style={{ marginTop: 20 }}
+        style={{
+          flexGrow: 1,
+          marginTop: 20,
+        }}
         data={routines}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
