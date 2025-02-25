@@ -129,6 +129,7 @@ const RoutinesScreen = () => {
     <View
       style={{
         paddingHorizontal: 26,
+        paddingVertical: 30,
       }}
     >
       <View
@@ -137,7 +138,6 @@ const RoutinesScreen = () => {
           flexDirection: 'row',
           alignItems: 'center',
           justifyContent: 'space-between',
-          paddingTop: 30,
         }}
       >
         <Text
